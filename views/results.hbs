@@ -1,2 +1,14 @@
 <h1>Du bist gerade auf der "RESULTS" Seite.<br>
 Die Route scheint also zu passen</h1>
+
+<h2>Results Details</h2>
+{{#if result}}
+<div>User Name: {{result.userName}}</div><br>
+<div>Test ID: {{result.testId}}</div><br>
+<div>Elapsed Time :{{ result.elapsedTime}}</div><br>
+<div>Executed Cases : {{result.numberOfCases}}</div><br>
+<div>Your Score : {{result.score}}</div><br>
+{{/if}}
+<h1>You are fit / partial fit / fired.</h1>
+<p>You has reached {{result.score}} Points of {{result.numberOfCases}} possible Points</p>
+
