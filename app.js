@@ -70,6 +70,8 @@ app.locals.title = 'Diagram Logic';
 const index = require('./routes/index');
 app.use('/', index);
 
+const testCase = require('./routes/testCase');
+app.use('/', testCase);
 
 const results = require('./routes/results');
 app.use('/', results);
