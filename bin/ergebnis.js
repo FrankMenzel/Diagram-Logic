@@ -13,14 +13,16 @@ const results = [
   testId: "XYB45678IN",
   elapsedTime: 4500,
   numberOfCases: 5,
-  score: 4
+  score: 4,
+  ergebnis: 0
   },
   {
     userName: "Karin Bialas",
     testId: "IUH532523523",
     elapsedTime: 2300,
     numberOfCases: 5,
-    score: 7
+    score: 7,
+    ergebnis: 0
   }
 ];
 Results.insertMany(results)
