@@ -67,9 +67,13 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 app.locals.title = 'Diagram Logic';
 
 
-
 const index = require('./routes/index');
 app.use('/', index);
+
+
+const results = require('./routes/results');
+app.use('/', results);
+
 
 const auth = require("./routes/auth");
 app.use("/", auth);
