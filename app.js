@@ -14,7 +14,7 @@ const session    = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 
 mongoose
-  .connect('mongodb://localhost/diagram-logic', {useNewUrlParser: true})
+  .connect(process.env.MONGODB_URI || "mongodb://localhost/diagram-logic", {useNewUrlParser: true})
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
@@ -70,6 +70,8 @@ app.locals.title = 'Diagram Logic';
 const index = require('./routes/index');
 app.use('/', index);
 
+const testCase = require('./routes/testCase');
+app.use('/', testCase);
 
 const results = require('./routes/results');
 app.use('/', results);
