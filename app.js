@@ -9,9 +9,12 @@ const mongoose     = require('mongoose');
 const logger       = require('morgan');
 const path         = require('path');
 
+// require packages to store the session in mongo and keep our users logged in
+const session    = require("express-session");
+const MongoStore = require("connect-mongo")(session);
 
 mongoose
-  .connect('mongodb://localhost/diagram-logic', {useNewUrlParser: true})
+  .connect(process.env.MONGODB_URI || "mongodb://localhost/diagram-logic", {useNewUrlParser: true})
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
@@ -29,6 +32,20 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// Middleware to enable sessions in Express
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    cookie: { maxAge: 24 * 60 * 60 },
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({
+      mongooseConnection: mongoose.connection
+    })
+  })
+);
 
 // Express View engine setup
 
@@ -50,13 +67,18 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 app.locals.title = 'Diagram Logic';
 
 
-
 const index = require('./routes/index');
 app.use('/', index);
 
 const testCase = require('./routes/testCase');
 app.use('/', testCase);
 
+const results = require('./routes/results');
+app.use('/', results);
+
+
+const auth = require("./routes/auth");
+app.use("/", auth);
 
 
 module.exports = app;
