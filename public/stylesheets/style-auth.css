@@ -1,14 +1,20 @@
-.navBar{
+#navArea {
   display: flex;
-  height: 5rem;
-  background-color: #2081c3;
-  justify-content: end;
-  font-size: 1rem;    
+  flex-direction: row;
+  justify-content: flex-end;
+  background-color: #2081c3;  
 }
 
-.navBar a{
+.navBar ul {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.navBar a {
   text-decoration: none;
-  color: #f7f9f9;    
+  color: #f7f9f9;
+  padding-right: 50px;
 }
 
 #form {
