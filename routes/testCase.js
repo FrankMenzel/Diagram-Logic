@@ -1,52 +1,51 @@
 const express = require("express");
 const router = express.Router();
+const TestCase = require("../models/testCases");
+const Test = require("../models/tests");
 
-router.get("/testcase", (req, res, next) => {
-  res.render("testCase");
+
+router.get("/test/new", (req, res, next) => {
+  Test.findOne()
+  .then(testData => {
+    testData.numOfCases = testData.cases.length;
+    res.render("testCase", testData);
+  })   
 });
 
-router.get("/testcase/new", (req, res, next) => {
-
-  let caseData = {
-     line1: {arg1: "100000", arg2: "200000", result: "300000"},  //hexadecimal strings of length 6
-     line2: {arg1: "400000", arg2: "800000", result: "C00000"},
-     line3: {arg1: "010000", arg2: "020000", result: "030000"},
-  };
-
-  res.send(caseData);
-  //.json(caseData);
+router.get("/test/new/:testId", (req, res, next) => {
+  Test.findById(req.params.testId) 
+  .then(testData => res.render("testCase", testData))
 });
 
-//Components bin:
+router.get("/testcase/new/:testCaseId", (req, res, next) => {
 
-//cat A  OR 1000   0100  1100
-//cat A  OR 0010   0001  0011
-//cat A     -      -     -
+  TestCase.findById(req.params.testCaseId)
+  .then(caseData => res.send(caseData))  //.json(caseData);
+});
 
-//cat B     -      -     -
-//cat B     -      -     -
-//cat B  OR 1000   0100  1100
+router.get("/testcase/score/:testCaseId/:answer", (req, res, next) => {
 
-//Components hex:
+  TestCase.findById(req.params.testCaseId)
+  .then(caseData => {
+    let score = (req.params.answer.toUpperCase() === caseData.line3.result.toUpperCase()); 
+    res.send(score)})
+});
 
-//cat A  OR 8     4     C
-//cat A  OR 2     1     3
-//cat A     -     -     -
+module.exports = router;
 
-//cat B     -     -    -
-//cat B     -     -    -
-//cat B  OR 8     4     C
-
-//Case:
+//Case1:
+//catOps: [{catName: "A", opName: "OR"}, {catName: "B", opName: "OR"}],
+//complexity: "XS",
 //  800000   400000   C00000
 //  200000   100000   300000
 //  080000   040000   0C0000
 
-//catOps: [{catName: "A", opName: "OR"}, {catName: "B", opName: "OR"}],
-//complexity: "XS",
-//line1: {arg1: "100000", arg2: "200000", result: "300000"},  //hexadecimal strings of length 6
-//line2: {arg1: "400000", arg2: "800000", result: "C00000"},
-//line3: {arg1: "010000", arg2: "020000", result: "030000"}
+//Case2:
+//catOps: [{catName: "A", opName: "NAND"}, {catName: "C", opName: "XOR"}, {catName: "D", opName: "NOR"}],
+//complexity: "S",
 
-module.exports = router;
+//00D800     20C000     201000
+//203000     201000     002800
+//20F000     00B800     204000
+
 

@@ -1,3 +1,14 @@
+let categories = ["A","B","C","D","E","F"];
+let diag;
+let currentCase = -1;
+let currentCaseId = "none";
+let testCase = [];
+let answer = {};
+let testStartTime;
+let timeLimit = 15 * 1000;
+let timer = 0;
+
+
 class Diagram {
   constructor(size) {
     this.canvas = document.createElement("canvas");
@@ -170,7 +181,7 @@ function drawC4(d) {
 
 function drawD1(d) {
   //Star small
-  const r = 0.09*d.size;
+  const r = 0.1*d.size;
   strokeStar(d.ctx, d.size/2, d.size/2, r, 8, 0.6)
 }
 
@@ -308,10 +319,6 @@ ctx.fill();
 ctx.restore();
 }
 
-
-
-
-
 function selectShape(shape) {
   
   if (answer.symbols.includes(shape)) {
@@ -328,15 +335,58 @@ function resetCase() {
   for (c of categories) 
     for (let i = 0; i < 4; i++) {
       document.getElementById(c+(i+1).toString()).style.borderColor = "green";
-    }
+    };
   answer.clearDiagram();
 }
 
-function submitAnswer() {
-  alert("Answer " + answer.symbols +" to be submitted");
-  resetCase();
-  getTestCase(5);
+function nextCase() {
+  clearTimeout(timer);
+  if (currentCase === -1) {
+  
+    document.getElementById("nextcase-btn").style.borderColor = "green";
+    document.getElementById("nextcase-btn").style.color = "black";
+    document.getElementById("nextcase-btn").innerHTML = "<h3>Next Case</h3";
+    resetCase();
+    currentCase = 0;
+
+    if (currentCase < (0+document.getElementById("num-cases").innerHTML)) {
+      currentCaseId = document.getElementById("case" + currentCase).innerHTML;
+      document.getElementById("current-case").innerHTML = "Case: " + currentCase + "  Id: " + currentCaseId;
+      getTestCase(currentCaseId);
+      testStartTime = (new Date()).getTime();
+      timer = setTimeout(caseTimeout, timeLimit);
+    }
+    else
+      finishTest();    
+  }
+
+  else {
+    scoreTestCase(currentCaseId, currentCase, encodePicture(answer.symbols));
+    resetCase();
+    currentCase = currentCase + 1;
+    if (currentCase < (0+document.getElementById("num-cases").innerHTML)) {
+      currentCaseId = document.getElementById("case" + currentCase).innerHTML;
+      document.getElementById("current-case").innerHTML = "Case: " + currentCase + "  Id: " 
+        + currentCaseId;
+      getTestCase(currentCaseId);
+      timer = setTimeout(caseTimeout, timeLimit);
+    }
+    else
+      finishTest();   
+  }
 }
+
+function finishTest() {
+  alert ("Test finished! Time elapsed: " 
+     + ((new Date().getTime() - testStartTime)/1000).toFixed(0) + " seconds" );
+  location.reload(true); //Send result to the server
+}
+
+function caseTimeout() {
+  alert("Time Out!")
+  nextCase();
+}
+
 
 function decodePicture(hexPic) {
 //return array of symbols for display in a diagram
@@ -358,11 +408,27 @@ function decodePicture(hexPic) {
     return res;   
   }
 
+  function encodePicture(symbols) {
+    //return a hexadecimal string 6-char long
+    let categories = ["A","B","C","D","E","F"];
+    let res = "";  
+      for (i = 0; i < categories.length; i++)  {  
+        let cat =  categories[i];
+        let d1 = symbols.includes(cat+"1");
+        let d2 = symbols.includes(cat+"2");
+        let d3 = symbols.includes(cat+"3");
+        let d4 = symbols.includes(cat+"4");
+        let r = (d1*8 + d2*4 + d3*2 + d4).toString(16);
+        res = res + r;
+      }  
+      return res;  
+  }  
+
 function getTestCase(caseId) {
-  axios.get("/testcase/new")
+  axios.get("/testcase/new/" + caseId) 
   .then(fromServer => {
+    clearTestCase();
     console.log("Received the case: " + JSON.stringify(fromServer.data));
-    console.log("Type: " + typeof(fromServer.data.line1.arg1));
     // put data in the DOM
     decodePicture(fromServer.data.line1.arg1).forEach(e => testCase[0][0].addSymbol(e));
     decodePicture(fromServer.data.line1.arg2).forEach(e => testCase[0][1].addSymbol(e));
@@ -372,12 +438,23 @@ function getTestCase(caseId) {
     decodePicture(fromServer.data.line2.result).forEach(e => testCase[1][2].addSymbol(e));
     decodePicture(fromServer.data.line3.arg1).forEach(e => testCase[2][0].addSymbol(e));
     decodePicture(fromServer.data.line3.arg2).forEach(e => testCase[2][1].addSymbol(e));
-    //decodePicture(fromServer.data.line3.result).forEach(e => testCase[2][2].addSymbol(e));
-
-//line1: {arg1: "100000", arg2: "200000", result: "300000"},  //hexadecimal strings of length 6
-//line2: {arg1: "400000", arg2: "800000", result: "C00000"},
-//line3: {arg1: "010000", arg2: "020000", result: "030000"},
     
+    //SETTIMEOUT
+    //DO NOT SEND THE ANSWER TO THE BROWSER
+    //decodePicture(fromServer.data.line3.result).forEach(e => testCase[2][2].addSymbol(e));
+    
+  }).catch(err => {
+      console.log("err => ", err);
+  });
+}
+
+function scoreTestCase(caseId, current, userAnswer) {
+  axios.get("/testcase/score/" + caseId + "/" + userAnswer) 
+  .then(fromServer => {  //should be true or false
+    clearTestCase();
+    console.log("Received the evaluation: " + JSON.stringify(fromServer.data) + " Type " + typeof(fromServer.data));
+    document.getElementById("result" + current).innerHTML = "  Result: " + fromServer.data;
+    return fromServer.data;
   }).catch(err => {
       console.log("err => ", err);
   });
@@ -385,9 +462,15 @@ function getTestCase(caseId) {
 
 
 
+function clearTestCase() {
+  for (let i = 0; i < 3; i++)
+    for (let j = 0; j < 3; j++)
+      testCase[i][j].clearDiagram();
+}
+
+
 //Populate the menu
-let categories = ["A","B","C","D","E","F"];
-let diag;
+
 for (c of categories) 
   for (let i = 0; i < 4; i++) {
       diag = new Diagram(48);
@@ -395,57 +478,20 @@ for (c of categories)
       document.getElementById(c+(i+1).toString()).appendChild(diag.canvas);
   }
 
-  //Populate the test case
-let testCase = [[new Diagram(48), new Diagram(48), new Diagram(48)],
+//Populate the test case
+testCase = [    [new Diagram(48), new Diagram(48), new Diagram(48)],
                 [new Diagram(48), new Diagram(48), new Diagram(48)],
                 [new Diagram(48), new Diagram(48), new Diagram(48)]];
-let answer = testCase[2][2];
+answer = testCase[2][2];
   for (let r = 0; r < 3; r++) 
     for (let c = 0; c < 3; c++) {
       document.getElementById("test-elem"+(r+1).toString()+(c+1).toString())
       .appendChild(testCase[r][c].canvas);
     }
 
-    //Just testing....
 
-/*
-testCase[0][0].addSymbol("C1");
-testCase[0][0].addSymbol("C2");
-testCase[0][0].addSymbol("C4");
-testCase[0][0].addSymbol("D1");
 
-testCase[0][1].addSymbol("C1");
-testCase[0][1].addSymbol("C2");
-testCase[0][1].addSymbol("A3");
 
-testCase[0][2].addSymbol("A3");
-testCase[0][2].addSymbol("C4");
 
-//-------------
-
-testCase[1][0].addSymbol("C3");
-testCase[1][0].addSymbol("C4");
-testCase[1][0].addSymbol("A3");
-
-testCase[1][1].addSymbol("C4");
-testCase[1][1].addSymbol("A3");
-
-testCase[1][2].addSymbol("D1");
-testCase[1][2].addSymbol("C3");
-
-//----------------
-
-testCase[2][0].addSymbol("C1");
-testCase[2][0].addSymbol("C2");
-testCase[2][0].addSymbol("C3");
-testCase[2][0].addSymbol("C4");
-testCase[2][0].addSymbol("A3");
-
-testCase[2][1].addSymbol("C1");
-testCase[2][1].addSymbol("C3");
-testCase[2][1].addSymbol("C4");
-testCase[2][1].addSymbol("D1");
-
-*/
 
 
