@@ -1,15 +1,39 @@
-<h1>Du bist gerade auf der "RESULTS" Seite.<br>
-Die Route scheint also zu passen</h1>
 
-<h2>Results Details</h2>
-{{#if userResult}}
-<div>User Name: {{userResult.userName}}</div><br>
-<div>Test ID: {{userResult.testId}}</div><br>
-<div>Elapsed Time :{{ userResult.elapsedTime}}</div><br>
-<div>Executed Cases : {{userResult.numberOfCases}}</div><br>
-<div>Your Score : {{userResult.score}}</div><br>
-<div>Target achievement in percent: {{ergebnis}}</div>
-{{/if}}
-<h1>You are fit / partial fit / fired.</h1>
-<p>You has reached {{userResult.score}} Points of {{userResult.numberOfCases}} possible Points</p>
+
+<section>
+  <div><h1>Results for {{userResult.userName}}</h1></div>
+
+  <div>
+  <h2>Details</h2>
+  </div>
+
+  <div>
+  <table>
+    <tr><th >Name</th><td>{{userResult.userName}}</td></tr>
+    <br>
+    <tr><th>Test Name</th><td>{{userResult.testName}}</td></tr>
+    <br>
+    <tr><th>Elapsed Time</th><td>{{ userResult.elapsedTime}}</td></tr>
+    <br>
+    <tr><th>Executed  Cases</th><td>{{userResult.numberOfCases}}</td></tr>
+    <br>
+    <tr><th>Your Score</th><td>{{userResult.score}}</td></tr>
+    <br>
+    <tr><th>Complexity</th><td>{{userResult.complexity}}</td></tr>
+    <br>
+    <tr><th>Percentage</th><td>{{ergebnis}}</td></tr>
+  </table>
+  </div>
+<div>
+  <p>You has reached {{userResult.score}} Points of {{userResult.numberOfCases}} possible Points</p>
+  </div>
+
+  <br>
+
+  <button>Home</button>
+  <button>Result List</button>
+  </div>
+
+  
+</section>
 

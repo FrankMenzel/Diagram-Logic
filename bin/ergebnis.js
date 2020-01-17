@@ -9,12 +9,12 @@ mongoose.connect('mongodb://localhost/diagram-logic', {
 
 const results = [
   {
-    userName: "Frank Menzel",
-  testId: "XYB45678IN",
+  userName: "Frank Menzel",
+  testName: "XYB45678IN",
   elapsedTime: 4500,
   numberOfCases: 5,
   score: 4,
-  ergebnis: 0
+  complexity: "Medium"
   },
   {
     userName: "Karin Bialas",
@@ -22,7 +22,6 @@ const results = [
     elapsedTime: 2300,
     numberOfCases: 5,
     score: 7,
-    ergebnis: 0
   }
 ];
 Results.insertMany(results)
