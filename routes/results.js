@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Results = require('../models/results');
+const User = require("../models/users");
 
 
 
@@ -19,6 +20,7 @@ router.get('/results', (req, res) => {
   });
   
   router.get('/resultlist', (req, res, next) => {
+    console.log("This is the session User ID : " + req.session.user._id);
     res.render('resultlist');
   });
 
