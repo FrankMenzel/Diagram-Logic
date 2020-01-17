@@ -6,7 +6,7 @@ const User = require("../models/users");
 
 
 router.get('/results', (req, res) => {
-  Results.findById('5e1f1a6b0170a12fac7eced5')
+  Results.findById('5e1f1a6b0170a12fac7eced6')
    .then(userResult => {
     let scores = userResult.score;
     let questions = userResult.numberOfCases;
@@ -19,9 +19,6 @@ router.get('/results', (req, res) => {
    })
   });
   
-  router.get('/resultlist', (req, res, next) => {
-    console.log("This is the session User ID : " + req.session.user._id);
-    res.render('resultlist');
-  });
+  
 
 module.exports = router;

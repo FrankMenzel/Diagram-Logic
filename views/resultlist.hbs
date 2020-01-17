@@ -13,8 +13,16 @@
       </tr>
     </thead>
     <tbody>
+      {{#each resultList}}
       <tr>
-     
+        <td>{{this.userName}}</td>
+        <td>{{this.testName}}</td>
+        <td>{{this.complexity}}</td>
+        <td>{{this.elapsedTime}}</td>
+        <td>{{this.numberOfCases}}</td>
+        <td>{{this.score}}</td>
+        <td>{{ergebnis}}</td>
       </tr>
+      {{/each}}
     </tbody>
   </table>
