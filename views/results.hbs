@@ -2,37 +2,33 @@
 
 <section>
   <div><h1>Results for {{userResult.userName}}</h1></div>
-
   <div>
   <h2>Details</h2>
   </div>
-
   <div>
   <table>
     <tr><th >Name</th><td>{{userResult.userName}}</td></tr>
-    <br>
     <tr><th>Test Name</th><td>{{userResult.testName}}</td></tr>
-    <br>
     <tr><th>Elapsed Time</th><td>{{ userResult.elapsedTime}}</td></tr>
-    <br>
     <tr><th>Executed  Cases</th><td>{{userResult.numberOfCases}}</td></tr>
-    <br>
     <tr><th>Your Score</th><td>{{userResult.score}}</td></tr>
-    <br>
     <tr><th>Complexity</th><td>{{userResult.complexity}}</td></tr>
-    <br>
     <tr><th>Percentage</th><td>{{ergebnis}}</td></tr>
   </table>
   </div>
 <div>
   <p>You has reached {{userResult.score}} Points of {{userResult.numberOfCases}} possible Points</p>
   </div>
+  
+<div class="buttonbox">
+    <form action = "/" >
+        <input class="rbutton" type="submit" value="Go to Home Page"/>
+    </form>
 
-  <br>
-
-  <button>Home</button>
-  <button>Result List</button>
-  </div>
+    <form action="resultlist">
+      <input class="rbutton" type="submit" value="See Resultlist"/>
+    </form>
+</div>
 
   
 </section>

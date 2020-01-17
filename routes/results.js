@@ -18,5 +18,8 @@ router.get('/results', (req, res) => {
    })
   });
   
+  router.get('/resultlist', (req, res, next) => {
+    res.render('resultlist');
+  });
 
 module.exports = router;
