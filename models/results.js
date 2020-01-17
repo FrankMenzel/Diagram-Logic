@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const resultSchema = new Schema ({
   userName: String,
-  testId: String,
+  testName: String,
+  complexity: String,
   elapsedTime: Number,
   numberOfCases: Number,
   score: Number

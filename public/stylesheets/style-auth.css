@@ -1,7 +1,8 @@
 .navBar{
+  display: flex;
+  height: 5rem;
   background-color: #2081c3;
-  padding: 1rem 1rem;
-  text-align: right;
+  justify-content: end;
   font-size: 1rem;    
 }
 
