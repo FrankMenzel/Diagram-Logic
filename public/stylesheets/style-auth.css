@@ -1,13 +1,20 @@
-.navBar{
-  background-color: #2081c3;
-  padding: 1rem 1rem;
-  text-align: right;
-  font-size: 1rem;    
+#navArea {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  background-color: #2081c3;  
 }
 
-.navBar a{
+.navBar ul {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.navBar a {
   text-decoration: none;
-  color: #f7f9f9;    
+  color: #f7f9f9;
+  padding-right: 50px;
 }
 
 #form {

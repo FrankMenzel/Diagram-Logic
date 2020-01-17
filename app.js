@@ -76,9 +76,11 @@ app.use('/', testCase);
 const results = require('./routes/results');
 app.use('/', results);
 
-
 const auth = require("./routes/auth");
 app.use("/", auth);
+
+const resultlist = require('./routes/resultlist.js');
+app.use('/', resultlist); 
 
 
 module.exports = app;

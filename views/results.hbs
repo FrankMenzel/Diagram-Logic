@@ -1,14 +1,35 @@
-<h1>Du bist gerade auf der "RESULTS" Seite.<br>
-Die Route scheint also zu passen</h1>
 
-<h2>Results Details</h2>
-{{#if result}}
-<div>User Name: {{result.userName}}</div><br>
-<div>Test ID: {{result.testId}}</div><br>
-<div>Elapsed Time :{{ result.elapsedTime}}</div><br>
-<div>Executed Cases : {{result.numberOfCases}}</div><br>
-<div>Your Score : {{result.score}}</div><br>
-{{/if}}
-<h1>You are fit / partial fit / fired.</h1>
-<p>You has reached {{result.score}} Points of {{result.numberOfCases}} possible Points</p>
+
+<section>
+  <div><h1>Results for {{userResult.userName}}</h1></div>
+  <div>
+  <h2>Details</h2>
+  </div>
+  <div>
+  <table>
+    <tr><th >Name</th><td>{{userResult.userName}}</td></tr>
+    <tr><th>Test Name</th><td>{{userResult.testName}}</td></tr>
+    <tr><th>Elapsed Time</th><td>{{ userResult.elapsedTime}}</td></tr>
+    <tr><th>Executed  Cases</th><td>{{userResult.numberOfCases}}</td></tr>
+    <tr><th>Your Score</th><td>{{userResult.score}}</td></tr>
+    <tr><th>Complexity</th><td>{{userResult.complexity}}</td></tr>
+    <tr><th>Percentage</th><td>{{ergebnis}}</td></tr>
+  </table>
+  </div>
+<div>
+  <p>You has reached {{userResult.score}} Points of {{userResult.numberOfCases}} possible Points</p>
+  </div>
+  
+<div class="buttonbox">
+    <form action = "/" >
+        <input class="rbutton" type="submit" value="Go to Home Page"/>
+    </form>
+
+    <form action="resultlist">
+      <input class="rbutton" type="submit" value="See Resultlist"/>
+    </form>
+</div>
+
+  
+</section>
 
