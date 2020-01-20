@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const TestCase = require("../models/testCases");
 const Test = require("../models/tests");
-
+const Result = require("../models/results");
+const User = require("../models/users");
 
 router.get("/test/new", (req, res, next) => {
   Test.findOne()
@@ -27,8 +28,16 @@ router.get("/testcase/score/:testCaseId/:answer", (req, res, next) => {
 
   TestCase.findById(req.params.testCaseId)
   .then(caseData => {
-    let score = (req.params.answer.toUpperCase() === caseData.line3.result.toUpperCase()); 
+    let score = (parseInt(req.params.answer,16) === parseInt(caseData.line3.result,16)); 
     res.send(score)})
+});
+
+router.post("/test/storeResult", (req, res, next) => {
+  const testResult = req.body;
+  testResult.userName = req.session.user.userName;
+  console.log ("Result to be stored: " + JSON.stringify(testResult));
+  Result.create(testResult);
+  //res.render('index');
 });
 
 module.exports = router;
