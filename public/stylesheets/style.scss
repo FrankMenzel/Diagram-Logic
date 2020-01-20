@@ -1,6 +1,8 @@
 @import url(styles-testCase.css);
 @import url(style-auth.css);
 @import url(style-result.css);
+@import url(style-home.css);
+@import url(style-privat.css);
 
 body {
   /* padding: 50px; */
@@ -9,5 +11,6 @@ body {
 }
 
 a {
-  color: #00B7FF;
+  /* color: #00B7FF; */
+  color: #2081c3;  
 }

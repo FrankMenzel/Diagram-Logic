@@ -63,7 +63,7 @@ router.get("/signup", (req, res) => {
   
           // Log the user in
           req.session.user = foundUser;
-          res.redirect("/");
+          res.redirect("/privat");
         });
       })
       .catch(err => next(err));
