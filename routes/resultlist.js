@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Results = require('../models/results');
-const User = require("../models/users");
 
-router.get('/resultlist', (req, res, next) => {
+router.get('/resultlist', (req, res) => {
     if (!req.session.user){
       res.redirect('/login');
       return;
@@ -18,9 +17,6 @@ router.get('/resultlist', (req, res, next) => {
         console.log(resultList);        
         res.render('resultlist', {resultList, sessUserName} )
       })
-      .catch(err => {
-        next(err);
-      })   
   });
   
   module.exports = router;
