@@ -1,25 +1,27 @@
 
 
 <section>
-  <div><h1>Results for {{userResult.userName}}</h1></div>
   <div>
-  <h2>Details</h2>
+    <h1 class="resListHeadLine">Your result</h1>
   </div>
+ 
+
   <div>
   <table>
-    <tr><th class="thResult">Name</th><td>{{userResult.userName}}</td></tr>
-    <tr><th>Test Name</th><td>{{userResult.testName}}</td></tr>
-    <tr><th>Elapsed Time</th><td>{{ userResult.elapsedTime}}</td></tr>
-    <tr><th>Executed  Cases</th><td>{{userResult.numberOfCases}}</td></tr>
-    <tr><th>Your Score</th><td>{{userResult.score}}</td></tr>
-    <tr><th>Complexity</th><td>{{userResult.complexity}}</td></tr>
-    <tr><th>Percentage</th><td>{{ergebnis}}</td></tr>
+        <tr><th class="thResult">Name</th><td class="tdResult">{{userResult.userName}}</td></tr>
+        <tr><th class="thResult">Test Name</th><td class="tdResult">{{userResult.testName}}</td></tr>
+        <tr><th class="thResult">Elapsed Time</th><td class="tdResult">{{ userResult.elapsedTime}}</td></tr>
+        <tr><th class="thResult">Executed  Cases</th><td class="tdResult">{{userResult.numberOfCases}}</td></tr>
+        <tr><th class="thResult">Your Score</th><td class="tdResult">{{userResult.score}}</td></tr>
+        <tr><th class="thResult">Complexity</th><td class="tdResult">{{userResult.complexity}}</td></tr>
+        <tr><th class="thResult">Percentage</th><td class="tdResult">{{ergebnis}}</td></tr>
   </table>
   </div>
-<div>
-  <p>You has reached {{userResult.score}} Points of {{userResult.numberOfCases}} possible Points</p>
-  </div>
   
+  <div>
+        <p class="resultFoot">You reached {{userResult.score}} of {{userResult.numberOfCases}} possible Points</p>
+  </div>
+
 <div class="buttonbox">
     <form action = "privat" >
         <input class="rbutton" type="submit" value="Trainings page"/>
@@ -32,4 +34,5 @@
 
   
 </section>
+
 

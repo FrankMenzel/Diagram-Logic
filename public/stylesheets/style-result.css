@@ -1,20 +1,65 @@
 section {
   display: flex;
   flex-direction: column;
-  
   align-items: center;
   margin-left: 200px;
   margin-right: 200px;
+}
+
+.tableResult{
+  margin-left: auto;
+  margin-right: auto;
+  display: table;
+}
+
+.tableRow{
+  display: table-row;
+  vertical-align: middle;
+}
+
+
+.tableCaption{
+  display: table-caption;
+  font-weight: bold;
+  text-align: left center;
+  
+  border: solid red 3px;
+  width: 200px;
+  height: 50px;
+
+}
+
+.tableCell{
+  display: table-cell;
+}
+
+.resListHeader{
+  
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+}
+
+.trButton {
+  
+  height: 80px;
+  width: 160px;
+  background-color: #2081c3;
+  color: white;
 }
 
 .resListHeadLine {
   text-align: center;
   margin-top: 50px;
   margin-bottom: 50px;
+  font-size: 50px;
 }
 
 .tableAlign{
   margin-left: 50px;
+  border: solid 25px  #2081c3;
+  border-style: ridge;
 }
 
 .thResult th {
@@ -23,6 +68,7 @@ section {
   background-color: lightcyan;
   height: 50px;
   padding-left: 25px;
+  padding-right: 25px;
 }
 
 .tdResult td  {
@@ -49,4 +95,32 @@ section {
   display: flex;
   justify-content: space-around;
   padding: 25px;
+}
+
+/* <<<<<<<<<<<<<<<<< Result.hbs Styles >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
+
+.thResult{
+  text-align: left;
+  width: 350px;
+  height: 50px;
+  font-size: 32px;
+}
+
+.tdResult{
+  text-align: left;
+  width: 400px;
+  height: 50px;
+  font-size: 32px;
+}
+
+.resListHeadLine {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 50px;
+}
+
+.resultFoot{
+  font-size: 50px;
+  text-align: center;
 }
