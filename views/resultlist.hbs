@@ -1,9 +1,10 @@
-<h1>Result List of {{this.sessUserName}}</h1>
+<h1 class="resListHeadLine">Result List of {{this.sessUserName}}</h1>
 
-  <table>
+  <table class="tableAlign">
     <thead>
-      <tr>
-        {{!-- <th>Name</th> --}}
+  
+  </thead>
+      <tr class="thResult">
         <th>Test Name</th>
         <th>Complexity</th>
         <th>elapsedTime</th>
@@ -11,12 +12,11 @@
         <th>Your Score</th>                           
         <th>Percentage</th>        
       </tr>
-    </thead>
+    
     
     <tbody>
       {{#each resultList}}      
-      <tr>        
-        {{!-- <td>{{this.userName}}</td> --}}
+      <tr class="tdResult"> 
         <td>{{this.testName}}</td>
         <td>{{this.complexity}}</td>
         <td>{{this.elapsedTime}}</td>

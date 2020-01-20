@@ -7,32 +7,42 @@ section {
   margin-right: 200px;
 }
 
-thResult {
-  text-align: left;
+.resListHeadLine {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.tableAlign{
+  margin-left: 50px;
+}
+
+.thResult th {
+  text-align: center;
   width: 250px;
   background-color: lightcyan;
-  padding-left: 25px;
-
-}
-
-td {
-  text-align: left;
-  background-color: lightcyan;
-  padding: 10px;
-  padding-left: 25px;
-}
-
-tr {
   height: 50px;
+  padding-left: 25px;
+}
+
+.tdResult td  {
+  text-align: center;
+  background-color: lightcyan;
+  height: 50px;
+  padding-left: 35px;
 }
 
 .rbutton {
   height: 80px;
   width: 160px;
   background-color: #2081c3;
-  border-color: #2081c3;
   color: white;
   margin: 15px;
+}
+
+.rbutton:hover {
+  background-color: green;
+  color: white;
 }
 
 .buttonbox {
