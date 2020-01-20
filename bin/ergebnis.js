@@ -10,7 +10,7 @@ mongoose.connect('mongodb://localhost/diagram-logic', {
 const results = [
   {
   userName: "ich",
-  testName: "XYB45678IN",
+  testName: "LetzterEintrag",
   elapsedTime: 4500,
   numberOfCases: 7,
   score: 4,
@@ -24,14 +24,7 @@ const results = [
     score: 70,
     complexity: "Strong"
   },
-  {
-    userName: "ich",
-    testName: "XYB456YSDR8IN",
-    elapsedTime: 4500,
-    numberOfCases: 5,
-    score: 4,
-    complexity: "Strong"
-    },
+  
     {
       userName: "du",
       testName: "IUH532523523",
