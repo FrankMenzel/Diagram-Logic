@@ -24,3 +24,23 @@
 .intro section p {
   font-size: 35px;
 }
+
+.rbuttonPrivatPage {
+  height: 40px;
+  width: 160px;
+  background-color: #2081c3;
+  color: white;
+  border-radius: 4px;
+  margin-top: 15px;
+  font-size: 15px;
+}
+
+.rbuttonPrivatPage:hover {
+  background-color: green;
+  color: white;
+}
+
+.buttonPrivatPageBox {
+  display: flex;
+  justify-content: flex-start;  
+}

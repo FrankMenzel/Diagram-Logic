@@ -3,8 +3,8 @@
   flex-direction: row;
   justify-content: flex-end;
   background-color: #2081c3;
-  padding-top: 15px;
-  padding-bottom: 15px;   
+  padding-top: 5px;
+  padding-bottom: 5px;   
 }
 
 .navBar ul {
@@ -20,7 +20,7 @@
 }
 
 #form {
-  margin: 30px auto;
+  margin: 150px auto;
   width: 380px; }
 
 #form label {
