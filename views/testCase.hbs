@@ -1,7 +1,13 @@
 
+
+
 <div>
-  <h3>Test: {{testName}}      Id: {{this._id}}</h3>
+  <h3><span>Test: </span> <span id="test-name">{{testName}}</span>  <span> Id: {{this._id}}</span></h3>
 </div>   
+
+<div>
+  <h4><span id="complexity">{{complexity}}</span></h4>
+</div>  
 
 <ul id = "testcases">
   {{#each cases}}      
@@ -17,9 +23,10 @@
           <h3 id="current-case">Case: none</h3>
         </div>       
 
+<div>
+        <div id="loader-icon"><img  src="../images/loader.gif" alt="" ></img> </div>
         <div id="test-container">
-          
-            <table class="test-case">
+          <table id="test-case">
             <tbody>
               <tr class="test-line">
                 <td id="test-elem11"> </td>
@@ -37,13 +44,14 @@
                 <td id="test-elem33"> </td>
               </tr>
             </tbody>
-            </table>
+          </table>
          
           <div id="nav-buttons">
             <button class="nav" id="reset-btn" onclick="resetCase()"><h3>Reset</h3></button>
             <button class="nav" id="nextcase-btn" onclick="nextCase()"><h3>Start Test</h3></button>
           </div>
         </div>
+</div>
 <h3>____________________________________________</h3>
         <div>
             <table id="menu">
@@ -86,4 +94,9 @@
             </table>
         </div>
 
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+    <script src="/javascripts/diagram.js"></script>
+    <script src="/javascripts/caseUI.js"></script>
+
+    
