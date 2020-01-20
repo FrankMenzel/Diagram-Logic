@@ -13,8 +13,7 @@ router.get('/resultlist', (req, res) => {
       .then(resultList => {              
         for (let i = 0; i < resultList.length; i++){          
           resultList[i].resultInPercentage = Math.round(resultList[i].score / resultList[i].numberOfCases * 100)
-        }
-        console.log(resultList);        
+        }       
         res.render('resultlist', {resultList, sessUserName} )
       })
   });

@@ -9,10 +9,8 @@ router.get('/results', (req, res) => {
   Results.findOne({"userName" : sessUs}).sort({createdAt: 'desc'}).limit(1)
    .then(userResult => {
     let scores = userResult.score;
-
     let questions = userResult.numberOfCases;
-    let ergebnis = (scores / questions) * 100
-    console.log("Dein Ergebnis : "+ ergebnis + " Prozent");
+    let ergebnis = Math.round((scores / questions) * 100)
     res.render('results', {userResult, ergebnis:ergebnis});
    })
   });
