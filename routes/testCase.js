@@ -28,7 +28,7 @@ router.get("/testcase/score/:testCaseId/:answer", (req, res, next) => {
 
   TestCase.findById(req.params.testCaseId)
   .then(caseData => {
-    let score = (req.params.answer.toUpperCase() === caseData.line3.result.toUpperCase()); 
+    let score = (parseInt(req.params.answer,16) === parseInt(caseData.line3.result,16)); 
     res.send(score)})
 });
 

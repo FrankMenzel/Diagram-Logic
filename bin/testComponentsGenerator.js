@@ -71,14 +71,13 @@ for (let i = 0; i < numOfCycles; i++) {
         //console.log(testComponent);           
       
         //Convert numbers to hex with num.toString(16)
-        convertToHex(testComponent);
+        //convertToHex(testComponent);
         
         //Write to the DB
         
         TestComponent.create(testComponent, (err) => {
           if (err) { throw (err) }
-          //console.log(`Created ${testcases.length} testcases`)
-          mongoose.connection.close();
+          //console.log(`Created ${testcases.length} testcases`)<
         });
         
       }
@@ -140,6 +139,9 @@ function genArgsRestricted() {
   testComponent.line3.arg2 = arg * Math.floor((Math.random() * 2));
 }
 
+
+
+//remove
 function convertToHex(comp) {
   comp.line1.arg1 = comp.line1.arg1.toString(16);
   comp.line1.arg2 = comp.line1.arg2.toString(16);
