@@ -1,7 +1,8 @@
 @import url(styles-testCase.css);
 @import url(style-auth.css);
 @import url(style-result.css);
-
+@import url(style-home.css);
+@import url(style-privat.css);
 body {
   /* padding: 50px; */
   /* font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; */
