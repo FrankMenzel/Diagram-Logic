@@ -6,7 +6,8 @@ const User = require("../models/users");
 
 
 router.get('/results', (req, res) => {
-  Results.findById('5e1f1a6b0170a12fac7eced6')
+  const sessUs = req.session.user.userName;
+  Results.findOne({"userName" : sessUs}).sort({field: 'asc', _id: -1}).limit(1)
    .then(userResult => {
     let scores = userResult.score;
     let questions = userResult.numberOfCases;
