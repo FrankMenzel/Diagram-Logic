@@ -64,7 +64,7 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 
 
 // default value for title local
-app.locals.title = 'Diagram Logic';
+app.locals.title = 'IQtty';
 
 
 const index = require('./routes/index');
@@ -82,5 +82,7 @@ app.use("/", auth);
 const resultlist = require('./routes/resultlist.js');
 app.use('/', resultlist); 
 
+const privatpage = require('./routes/privat.js');
+app.use('/', privatpage);
 
 module.exports = app;
