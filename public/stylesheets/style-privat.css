@@ -1,6 +1,6 @@
-.projDesc {
+.intro {
   padding-top: 5rem;
-  background:url(../images/grid.jpg);
+  background:url(../images/grid2.jpg);
   /* border: solid 2px red; */
   background-repeat: no-repeat;
   background-size: 100%;
@@ -9,7 +9,7 @@
   height: 50vw;   
 }
 
-.projDesc section {
+.intro section {
   padding-top: 10rem;  
   /* background: rgba(32,129,195,0.5); */    
   height: 15rem;
@@ -19,8 +19,4 @@
   align-items: flex-start;  
   font-size: 20px;
   color: darkslategrey;  
-}
-
-.projDesc section h1 {
-  font-size: 50px;
 }
