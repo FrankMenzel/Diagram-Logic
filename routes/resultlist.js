@@ -19,10 +19,10 @@ router.get('/resultlist', (req, res, next) => {
         console.log(scores / questions * 100)
       }
     
-    /* let ergebnis = (scores / questions * 100);
+    let ergebnis = (scores / questions * 100);
     console.log("Dein Ergebnis : "+ ergebnis + " Prozent");
     console.log(typeof ergebnis);
-      res.render('resultlist', {resultList, ergebnis:ergebnis} ); */
+      res.render('resultlist', {resultList, ergebnis:ergebnis} );
     })
    
   });
