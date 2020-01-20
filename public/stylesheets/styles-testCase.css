@@ -1,6 +1,6 @@
 
-.test-case td {
-      border: 1px solid gray; 
+#test-case td {
+    border: 1px solid gray; 
 }
 
 td {
@@ -17,11 +17,19 @@ button {
     /*padding: 1px;*/
   }
 
+#loader-icon {
+  position: absolute;
+  z-index: 0;
+  visibility: hidden;
+}
+
 #test-container {
+  position: relative;
+  z-index: 1;
   width: 350px;
   display: flex;
   align-content: space-between;
-  justify-content: space-between;
+  justify-content: left;
 }
 
 #nav-buttons {
