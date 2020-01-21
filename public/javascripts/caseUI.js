@@ -9,11 +9,13 @@ let testCase = [];
 let answer = {};
 let caseStartTime = 0;
 let testTime = 0;
-let timeLimit = 10 * 1000;
-let animTime = 3 * 1000;
+let timeLimit = 60 * 1000;  //per case
+let animTime = 2 * 1000; //between cases
 let caseTimer = 0;
 let loadTimer = 0;
 let currentScore = 0;
+
+document.getElementById("current-case").innerHTML = "Case: none / " + numOfCases;
 
 //Populate the menu
 
@@ -59,9 +61,6 @@ function resetCase() {
 function loadNextCase() {
 
   document.getElementById("loader-icon").style.visibility="hidden";
-  console.log("loader-icon zIndex: " + document.getElementById("loader-icon").style.zIndex);
-  console.log("test-container zIndex: " + document.getElementById("test-container").style.zIndex);  
- 
   document.getElementById("loader-icon").style.zIndex = "0";
   document.getElementById("test-container").style.zIndex = "1";  
 
@@ -83,7 +82,7 @@ function loadNextCase() {
   }
   else {  
     currentCaseId = document.getElementById("case" + currentCase).innerHTML;
-    document.getElementById("current-case").innerHTML = "Case: " + currentCase + "  Id: " + currentCaseId;
+    document.getElementById("current-case").innerHTML = "Case: " + (currentCase + 1) + " / " + numOfCases;
     getTestCase(currentCaseId);  //Promise inside!
   };
   
@@ -101,18 +100,20 @@ const testResult = {
 
   clearTimeout(caseTimer);
   clearTimeout(loadTimer); 
-  alert ("Test finished! Time elapsed: " + (testTime/1000).toFixed(1) + " seconds" );
+  //alert ("Test finished! Time elapsed: " + (testTime/1000).toFixed(1) + " seconds" );
 
   //Send result to the server
   axios.post("/test/storeResult", testResult) 
   .then(fromServer => {  
-    console.log("Test finished. Result stored: " + fromServer.data);
-
+    console.log("Result stored. Response from server: " + fromServer.data);
   }).catch(err => {
       console.log("Error while storing the test result: ", err);
   });
+
+  location.assign("/results");
+  //location.assign("http://localhost:3000/results");
   //location.reload(true); 
-  location.reload(); 
+  //location.reload(); 
 }
 
 function caseTimeout() {
