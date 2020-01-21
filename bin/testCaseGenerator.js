@@ -111,7 +111,7 @@ function createTestCases(comps) {
   numericTestCase.line3.arg2 = 0; 
   numericTestCase.line3.result = 0; 
 
-  console.log(JSON.stringify(selectedComps));
+  //console.log(JSON.stringify(selectedComps));
 
   for (c of selectedComps) 
      addComponentToCase(c, numericTestCase);
@@ -153,7 +153,7 @@ function addComponentToCase(tcomp, tcase) {
   const idx = catNames.indexOf(tcomp.catName);
   let weight = catWeights[idx];
 
-  console.log("Category: " + tcomp.catName + " WEIGHT: " + weight);
+  //console.log("Category: " + tcomp.catName + " WEIGHT: " + weight);
 
   //operations on numbers
   tcase.line1.arg1 = tcase.line1.arg1 + tcomp.line1.arg1 * weight;

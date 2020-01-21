@@ -1,4 +1,4 @@
-const numOfCases = 5;          //number of cases in the test
+const numOfCases = 2;          //number of cases in the test
 const maxCaseComplexity = 1;    //max case complexity 1-Low, 2-Medium, 3-High
 
 const mongoose = require('mongoose');
@@ -11,7 +11,7 @@ mongoose.connect(`mongodb://localhost/${dbName}`, {
   useUnifiedTopology: true
 });
 
-const test = {   
+let test = {   
   testName: "",    
   complexity: "",
   cases: []
@@ -41,11 +41,12 @@ Test
     //Generate one test 
     createTest(docs);
 
-    //Write it to the DB
-    Test.create(test)
-    .then(() => {
-      mongoose.connection.close();
-    });  
+      //Write it to the DB
+      Test.create(test)
+      .then(() => {
+        mongoose.connection.close();
+      });  
+
   });
 });   
 
@@ -69,6 +70,8 @@ function createTest(cases) {
   test.complexity = (maxCaseComplexity === 1) ? "Low" : (maxCaseComplexity === 2) ? "Medium" : "High"; 
   test.testName = maxTestName + 1;
   console.log("Test created: " + JSON.stringify(test));
+
+
 
 }
 
