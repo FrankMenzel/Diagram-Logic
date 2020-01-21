@@ -85,4 +85,7 @@ app.use('/', resultlist);
 const privatpage = require('./routes/privat.js');
 app.use('/', privatpage);
 
+const xadmin = require('./routes/admin.js');
+app.use('/', xadmin);
+
 module.exports = app;
