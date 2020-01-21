@@ -6,13 +6,21 @@ const Result = require("../models/results");
 const User = require("../models/users");
 
 router.get("/test/new", (req, res, next) => {
+  if (!req.session.user){
+    res.redirect('/login');
+    return;
+  }
+
   //A test must be selected randomly  !!!!
 
   //Get all test cases from DB
+
+  /*
   TestCase.find()
   .then (docs => {
 
     //Generate one test 
+
     createTest(docs);
 
     //Write it to the DB
@@ -22,12 +30,12 @@ router.get("/test/new", (req, res, next) => {
     });  
   });
 
-
+*/
 
 
 
   
-  Test.findById("5e26cb5902c25548fc27a765")
+  Test.findById("5e26e4112b79643cb80e4133")
   .then(testData => {
     testData.numOfCases = testData.cases.length;
     res.render("testCase", testData);
