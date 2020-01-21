@@ -35,17 +35,31 @@ app.use(cookieParser());
 
 // Middleware to enable sessions in Express
 
-app.use(
+/* app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    cookie: { maxAge: 24 * 60 * 60 },
+    cookie: { maxAge: 24 * 60 * 60 },    
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({
       mongooseConnection: mongoose.connection
     })
   })
+); */
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,    
+    cookie: { maxAge: 3600000 },
+    resave: true,
+    saveUninitialized: false,
+    store: new MongoStore({
+      mongooseConnection: mongoose.connection
+    })
+  })
 );
+
+
 
 // Express View engine setup
 

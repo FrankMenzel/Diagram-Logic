@@ -9,7 +9,7 @@ mongoose.connect(`mongodb://localhost/${dbName}`, {
 
 const tests = [
   {
-    testName: "1",
+    testName: 1,
     cases: ["5e2075a3d47a841ba8187bc2", "5e2089baec76e53438d8c1ca"],    //array of testCaseId
     complexity: "S"
   }

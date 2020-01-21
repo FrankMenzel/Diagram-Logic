@@ -5,6 +5,10 @@ const Results = require('../models/results');
 
 
 router.get('/results', (req, res) => {
+  if (!req.session.user){
+    res.redirect('/login');
+    return;
+  }  
   const sessUs = req.session.user.userName;
   Results.findOne({"userName" : sessUs}).sort({createdAt: 'desc'}).limit(1)
    .then(userResult => {
