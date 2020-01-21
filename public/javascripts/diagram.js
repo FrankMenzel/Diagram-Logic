@@ -309,15 +309,18 @@ class Diagram {
   }
 
 }  //end of Diagram class
-
 function decodePicture(hexPic) {
   //return array of symbols for display in a diagram
   let categories = ["A","B","C","D","E","F"];
   let res = [];
-
+  
+  //Padding leading zeros to get the hexPic of LENGTH 6!!!
+  let padded = "0000000000" + hexPic;
+  let valid = padded.substr(padded.length - 6);
+  
   for (i = 0; i < categories.length; i++)  {
     let catName = categories[i];
-    let numCat = parseInt(hexPic.charAt(i), 16);
+    let numCat = parseInt(valid.charAt(i), 16);
     let shape1 =  (numCat & 8) >> 3;
     let shape2 =  (numCat & 4) >> 2;
     let shape3 =  (numCat & 2) >> 1;

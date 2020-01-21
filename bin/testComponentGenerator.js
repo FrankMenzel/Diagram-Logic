@@ -1,3 +1,6 @@
+const numOfCycles = 1;  //number of generator cycles (INPUT)
+                        //1 cycle = up to 30 components
+
 const mongoose = require('mongoose');
 const TestComponent = require('../models/testComponents');
 
@@ -10,8 +13,7 @@ mongoose.connect(`mongodb://localhost/${dbName}`, {
 
 //=====================================================
 
-const numOfCycles = 1;  //number of generator cycles (INPUT)
-                        //1 cycle = up to 30 components
+
 
 const testComponent = {   
   catName: "",    

@@ -1,4 +1,4 @@
-const numOfCases = 2;          //number of cases in the test
+const numOfCases = 20;          //number of cases in the test
 const maxCaseComplexity = 1;    //max case complexity 1-Low, 2-Medium, 3-High
 
 const mongoose = require('mongoose');
@@ -11,7 +11,7 @@ mongoose.connect(`mongodb://localhost/${dbName}`, {
   useUnifiedTopology: true
 });
 
-const test = {   
+let test = {   
   testName: "",    
   complexity: "",
   cases: []
@@ -25,21 +25,29 @@ console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 //  console.log("Number of tests stored in DB: " + count);
 //});
 
-//Getting max value
+//Get max testName from DB
 let maxTestName = 0;
 Test 
-  .findOne({})
-  .sort('-testName')   //getting max
-  .exec(function (err, testMax) {
-    maxTestName = testMax.testName;
-    console.log("Max testName is: " + maxTestName + " and the test ID is: " + maxTestName);
+.findOne({})
+.sort('-testName')   //getting max
+.exec(function (err, testMax) {
+  maxTestName = (testMax === null) ? 0 : testMax.testName;
+  console.log("Max testName is: " + maxTestName);
 
-    TestCase.find()
-    .then (docs => {
-     createTest(docs);
-     //mongoose.connection.close();
-    });
+  //Get all test cases from DB
+  TestCase.find()
+  .then (docs => {
 
+    //Generate one test 
+    createTest(docs);
+
+      //Write it to the DB
+      Test.create(test)
+      .then(() => {
+        mongoose.connection.close();
+      });  
+
+  });
 });   
 
 
@@ -63,13 +71,7 @@ function createTest(cases) {
   test.testName = maxTestName + 1;
   console.log("Test created: " + JSON.stringify(test));
 
-  //Write to the DB
 
-
-  Test.create(test)
-  .then(() => {
-    mongoose.connection.close();
-  }); 
 
 }
 
