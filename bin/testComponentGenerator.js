@@ -9,6 +9,7 @@ mongoose.connect(`mongodb://localhost/${dbName}`, {
 
 
 //=====================================================
+// module.exports = function cappuccino () {
 
 const numOfCycles = 1;  //number of generator cycles (INPUT)
                         //1 cycle = up to 30 components
@@ -88,6 +89,7 @@ for (let i = 0; i < numOfCycles; i++) {
 
 console.log("Generated: " + countComponents + " components");
 
+// }
 //Functions
 
 function validate(catname, opResults) {
@@ -154,3 +156,5 @@ function convertToHex(comp) {
   comp.line3.result = comp.line3.result.toString(16);
 
 }
+
+// } module.exports = testComponentGenerator
