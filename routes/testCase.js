@@ -8,13 +8,26 @@ const User = require("../models/users");
 router.get("/test/new", (req, res, next) => {
   //A test must be selected randomly  !!!!
 
+  //Get all test cases from DB
+  TestCase.find()
+  .then (docs => {
+
+    //Generate one test 
+    createTest(docs);
+
+    //Write it to the DB
+    Test.create(test)
+    .then(() => {
+      mongoose.connection.close();
+    });  
+  });
 
 
 
 
 
   
-  Test.findById("5e2625d16de33635f4ce1d13")
+  Test.findById("5e26cb5902c25548fc27a765")
   .then(testData => {
     testData.numOfCases = testData.cases.length;
     res.render("testCase", testData);
