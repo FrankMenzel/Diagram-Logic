@@ -68,8 +68,6 @@ while (selectedCats.length < numOfComponents) {
 console.log("Categories selected for this case: " + selectedCats);
 //Retrieve all components
 
-const allComponents = [];
-
 TestComponent.find()
 .then(docs => {
     //mongoose.connection.close();
