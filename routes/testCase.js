@@ -8,6 +8,19 @@ const User = require("../models/users");
 router.get("/test/new", (req, res, next) => {
   //A test must be selected randomly  !!!!
 
+  //Get all test cases from DB
+  TestCase.find()
+  .then (docs => {
+
+    //Generate one test 
+    createTest(docs);
+
+    //Write it to the DB
+    Test.create(test)
+    .then(() => {
+      mongoose.connection.close();
+    });  
+  });
 
 
 
