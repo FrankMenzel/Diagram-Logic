@@ -6,7 +6,15 @@ const Result = require("../models/results");
 const User = require("../models/users");
 
 router.get("/test/new", (req, res, next) => {
-  Test.findOne()
+  //A test must be selected randomly  !!!!
+
+
+
+
+
+
+  
+  Test.findById("5e2625d16de33635f4ce1d13")
   .then(testData => {
     testData.numOfCases = testData.cases.length;
     res.render("testCase", testData);
@@ -36,26 +44,15 @@ router.post("/test/storeResult", (req, res, next) => {
   const testResult = req.body;
   testResult.userName = req.session.user.userName;
   console.log ("Result to be stored: " + JSON.stringify(testResult));
-  Result.create(testResult);
-  //res.render('index');
+  //res.render("index");
+  Result.create(testResult)
+  .then();
   
+  //.then(() => {res.redirect("/results")});
+  //res.render("results");
 });
 
 module.exports = router;
 
-//Case1:
-//catOps: [{catName: "A", opName: "OR"}, {catName: "B", opName: "OR"}],
-//complexity: "XS",
-//  800000   400000   C00000
-//  200000   100000   300000
-//  080000   040000   0C0000
-
-//Case2:
-//catOps: [{catName: "A", opName: "NAND"}, {catName: "C", opName: "XOR"}, {catName: "D", opName: "NOR"}],
-//complexity: "S",
-
-//00D800     20C000     201000
-//203000     201000     002800
-//20F000     00B800     204000
 
 

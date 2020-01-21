@@ -14,6 +14,7 @@ button {
     border: 3px solid green; 
     border-radius: 8px;
     margin: 1px;
+    font-size: medium;
     /*padding: 1px;*/
   }
 
@@ -21,6 +22,8 @@ button {
   position: absolute;
   z-index: 0;
   visibility: hidden;
+  width: 310px;
+  
 }
 
 #test-container {
@@ -29,7 +32,16 @@ button {
   width: 350px;
   display: flex;
   align-content: space-between;
-  justify-content: left;
+  justify-content: space-evenly;
+}
+
+#test-and-loader {
+  padding-top: 20px;
+  width: 400px;
+  display: flex;
+  align-content: space-between;
+  justify-content: space-evenly;
+  padding-bottom: 50px;
 }
 
 #nav-buttons {

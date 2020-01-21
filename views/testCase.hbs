@@ -1,30 +1,28 @@
 
-
-
 <div>
-  <h3><span>Test: </span> <span id="test-name">{{testName}}</span>  <span> Id: {{this._id}}</span></h3>
+  <h2><span>Test: </span> <span id="test-name">{{testName}}</span> <span style="display:none"> Id: {{this._id}}</span></h2>
 </div>   
-
 <div>
-  <h4><span id="complexity">{{complexity}}</span></h4>
+  <h3 id="current-case">Case: none</h3>
+</div>   
+<div>
+  <h3><span>Complexity: </span><span id="complexity">{{complexity}}</span></h3>
 </div>  
 
-<ul id = "testcases">
+<ul id = "testcases" style="display:none">
   {{#each cases}}      
     <li><span id="case{{@index}}">{{this._id}}</span>  <span id="result{{@index}}">Result: </span> </li>    
   {{/each}}
 </ul>  
 
-<div>
-  <h6><span>Number of cases: </span> <span id="num-cases">{{numOfCases}}</span> </h6>
+<div style="display:none">
+  <h6><span> Number of cases: </span> <span id="num-cases">{{numOfCases}}</span> </h6>
 </div>  
 
-        <div>
-          <h3 id="current-case">Case: none</h3>
-        </div>       
+    
 
-<div>
-        <div id="loader-icon"><img  src="../images/loader.gif" alt="" ></img> </div>
+<div id ="test-and-loader">
+        <div id="loader-icon"><img  src="../images/loader.gif" alt="" width="310"></img> </div>
         <div id="test-container">
           <table id="test-case">
             <tbody>
@@ -47,12 +45,12 @@
           </table>
          
           <div id="nav-buttons">
-            <button class="nav" id="reset-btn" onclick="resetCase()"><h3>Reset</h3></button>
             <button class="nav" id="nextcase-btn" onclick="nextCase()"><h3>Start Test</h3></button>
+            <button class="nav" id="reset-btn" onclick="resetCase()"><h3>Reset</h3></button>
           </div>
         </div>
 </div>
-<h3>____________________________________________</h3>
+<!-- h3>____________________________________________</h3-->
         <div>
             <table id="menu">
                 <tbody>
