@@ -38,6 +38,7 @@ router.post("/test/storeResult", (req, res, next) => {
   console.log ("Result to be stored: " + JSON.stringify(testResult));
   Result.create(testResult);
   //res.render('index');
+  
 });
 
 module.exports = router;

@@ -113,6 +113,7 @@ const testResult = {
   });
   //location.reload(true); 
   location.reload(); 
+
 }
 
 function caseTimeout() {
