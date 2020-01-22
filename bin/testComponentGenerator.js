@@ -12,6 +12,7 @@ mongoose.connect(`mongodb://localhost/${dbName}`, {
 
 
 //=====================================================
+// module.exports = function cappuccino () {
 
 
 
@@ -90,6 +91,7 @@ for (let i = 0; i < numOfCycles; i++) {
 
 console.log("Generated: " + countComponents + " components");
 
+// }
 //Functions
 
 function validate(catname, opResults) {
@@ -102,12 +104,6 @@ function validate(catname, opResults) {
   return valid;
 }
 
-function removeDuplicates(arr) {
-  return arr.map((e,i,a) => {
-    return (a.indexOf(e) === a.lastIndexOf(e)) ? e : -1;
-  });
-}
-
 function bitwise(op, arg1, arg2) {
   switch (op) {
     case "AND": return arg1 & arg2;
@@ -117,7 +113,6 @@ function bitwise(op, arg1, arg2) {
     case "XOR": return arg1 ^ arg2;
     default: return 0;
   }
-
 }
 
 function genArgsUnrestricted() {
@@ -156,3 +151,5 @@ function convertToHex(comp) {
   comp.line3.result = comp.line3.result.toString(16);
 
 }
+
+// } module.exports = testComponentGenerator
