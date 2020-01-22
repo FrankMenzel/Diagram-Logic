@@ -14,104 +14,221 @@ mongoose.connect(`mongodb://localhost/${dbName}`, {
 
 */
 
+let selectedCats = [];
+let numOfComponents;
+
+const testCase = {
+  catOps: [],
+  complexity: "",
+  line1: { arg1: "", arg2: "", result: "" }, //hexadecimal strings of length 6
+  line2: { arg1: "", arg2: "", result: "" },
+  line3: { arg1: "", arg2: "", result: "" }
+};
+
+
+const numericTestCase = {
+  line1: { arg1: 0, arg2: 0, result: 0 },
+  line2: { arg1: 0, arg2: 0, result: 0 },
+  line3: { arg1: 0, arg2: 0, result: 0 }
+};
+
+function createTestCases(comps) {
+  let numOfComponentsFromDB = comps.length;
+  let selectedComps = [];
+
+  console.log("Number of components: " + numOfComponentsFromDB);
+
+  for (let i = 0; i < selectedCats.length; i++) {
+    let cat = selectedCats[i];
+    let compsWithCategory = [];
+    comps.reduce((acc, e) => {
+      if (e.catName === cat) compsWithCategory.push(e);
+    }, 0);
+    console.log("Components with category: " + cat)
+    console.log("Components with category " + cat + ": " + compsWithCategory.length);
+
+    let n = Math.floor(Math.random() * compsWithCategory.length);
+    selectedComps.push(compsWithCategory[n]);
+
+  }
+
+  console.log("Selected Components: ", selectedComps);
+  for (let c of selectedComps) console.log("Category: " + c.catName + " ID: " + c._id);
+
+  //combine cases in one numericTestCase object
+
+  numericTestCase.line1.arg1 = 0;
+  numericTestCase.line1.arg2 = 0;
+  numericTestCase.line1.result = 0;
+
+  numericTestCase.line2.arg1 = 0;
+  numericTestCase.line2.arg2 = 0;
+  numericTestCase.line2.result = 0;
+
+  numericTestCase.line3.arg1 = 0;
+  numericTestCase.line3.arg2 = 0;
+  numericTestCase.line3.result = 0;
+
+  console.log(JSON.stringify(selectedComps));
+
+  for (let c of selectedComps)
+    addComponentToCase(c, numericTestCase);
+
+  //populate the final testCase object
+  for (let c of selectedComps) testCase.catOps.push({ catName: c.catName, opName: c.opName });
+  testCase.complexity = (numOfComponents <= 2) ? "Low" : (numOfComponents <= 4) ? "Medium" : "High";
+
+  //convert values to strings with .toString(16);
+  testCase.line1.arg1 = numericTestCase.line1.arg1.toString(16);
+  testCase.line1.arg2 = numericTestCase.line1.arg2.toString(16);
+  testCase.line1.result = numericTestCase.line1.result.toString(16);
+
+  testCase.line2.arg1 = numericTestCase.line2.arg1.toString(16);
+  testCase.line2.arg2 = numericTestCase.line2.arg2.toString(16);
+  testCase.line2.result = numericTestCase.line2.result.toString(16);
+
+  testCase.line3.arg1 = numericTestCase.line3.arg1.toString(16);
+  testCase.line3.arg2 = numericTestCase.line3.arg2.toString(16);
+  testCase.line3.result = numericTestCase.line3.result.toString(16);
+
+  console.log("For the database: ");
+  console.log(JSON.stringify(testCase));
+
+  //Write to the DB
+
+  TestCase.create(testCase)
+    .then(() => {
+      // mongoose.connection.close();
+      console.log('TestCase successfully created !!');
+    });
+
+
+}
+
+
+function caseGenerator() {
+  console.log("*********************************************************************");
+  console.log('before start : selected cats : ' + selectedCats + 'number of components : ' + numOfComponents);
+  //select categories
+
+  while (selectedCats.length < numOfComponents) {
+    let n = Math.floor(Math.random() * categories.length);
+    console.log('random number : ', n);
+    let cat = categories[n].name;
+    //validation
+    if (selectedCats.includes(cat)
+      || (cat === "D" && selectedCats.includes("E"))
+      || (cat === "E" && selectedCats.includes("D"))) continue;
+    selectedCats.push(cat);
+  }
+
+  console.log("Categories selected for this case: " + selectedCats);
+  //Retrieve all components
+
+  TestComponent.find()
+    .then(docs => {
+      //mongoose.connection.close();
+      console.log("RETURNED FROM FIND : ", docs);
+      createTestCases(docs);
+    });
+}
 
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 router.get('/xadmin', (req, res) => {
-    res.render('admin');
-})
-  
-router.get('/components', (req, res) => {
-    res.send('components generated '+  componentGenerator());
+  res.render('admin');
 })
 
-router.get('/cases/:noOfComp', async (req, res) => {
-    numOfComponents = req.params.noOfComp;
-    const cases = await caseGenerator();
-    //console.log('request for testcase received. Number of components ' + req.params.noOfComp);
-    res.send('One case generated');
+router.get('/components', (req, res) => {
+  res.send('components generated ' + componentGenerator());
+})
+
+router.get('/cases/:noOfComp', (req, res) => {
+  numOfComponents = req.params.noOfComp;
+  console.log('request for testcase received. Number of components ' + req.params.noOfComp);
+  caseGenerator();
+  res.json('One case generated');
 })
 
 router.get('/tests', (req, res) => {
-    res.send('test cases generated');
+  res.send('test cases generated');
 })
 
 
 
-module.exports = router;
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TestComponentGenerator
 
-const testComponent = {   
-    catName: "",    
-    opName: "",      
-    line1: {arg1: 0, arg2: 0, result: 0},
-    line2: {arg1: 0, arg2: 0, result: 0},
-    line3: {arg1: 0, arg2: 0, result: 0}
-  };
+const testComponent = {
+  catName: "",
+  opName: "",
+  line1: { arg1: 0, arg2: 0, result: 0 },
+  line2: { arg1: 0, arg2: 0, result: 0 },
+  line3: { arg1: 0, arg2: 0, result: 0 }
+};
 
 
 
 const categories = [
-  {name: "A", desc: "Line"},
-  {name: "B", desc: "Arc"},
-  {name: "C", desc: "Dot"},
-  {name: "D", desc: "Centric"},
-  {name: "E", desc: "Arrow"},
-  {name: "F", desc: "Circle"}    
+  { name: "A", desc: "Line" },
+  { name: "B", desc: "Arc" },
+  { name: "C", desc: "Dot" },
+  { name: "D", desc: "Centric" },
+  { name: "E", desc: "Arrow" },
+  { name: "F", desc: "Circle" }
 ];
-      
+
 const operations = [
-  {name: "AND",  desc: "Intersect of"},
-  {name: "NAND", desc: "Negative intersect of"},
-  {name: "OR",   desc: "Union of"},
-  {name: "NOR",  desc: "Negative union of"},
-  {name: "XOR",  desc: "Exclusive union of"},
+  { name: "AND", desc: "Intersect of" },
+  { name: "NAND", desc: "Negative intersect of" },
+  { name: "OR", desc: "Union of" },
+  { name: "NOR", desc: "Negative union of" },
+  { name: "XOR", desc: "Exclusive union of" },
   //{name: "CW",   desc: "Clockwise rotation of"},
   //{name: "CCW",  desc: "Counter-clockwise rotation of"}
-]; 
+];
 
-function componentGenerator(){
-    
-      
-    let countComponents = 0; 
+function componentGenerator() {
+
+
+  let countComponents = 0;
   for (cat of categories) {
     testComponent.catName = cat.name;
-    ["A","B","C","F"].includes(cat.name) ? genArgsUnrestricted() : genArgsRestricted();
+    ["A", "B", "C", "F"].includes(cat.name) ? genArgsUnrestricted() : genArgsRestricted();
     //pre-calculate results of each operation (line 3 only)
     let res = [];
-    for (op of operations) 
+    for (op of operations)
       res.push(bitwise(op.name, testComponent.line3.arg1, testComponent.line3.arg2));
     //console.log("Results: " + res);
     //validate (invalid cases will be replaced with -1)
-    let validRes = validate(cat.name, res); 
+    let validRes = validate(cat.name, res);
     //console.log("Validated: " + validRes);
-    validRes.forEach((e,i,a) => {
+    validRes.forEach((e, i, a) => {
       if (e < 0) return;
       else {
         testComponent.opName = operations[i].name;
         console.log("Generating component for category " + testComponent.catName
-           + " and operation " + testComponent.opName);
+          + " and operation " + testComponent.opName);
         countComponents = countComponents + 1;
-        testComponent.line1.result 
-           = bitwise(testComponent.opName, testComponent.line1.arg1, testComponent.line1.arg2);
-        testComponent.line2.result 
-           = bitwise(testComponent.opName, testComponent.line2.arg1, testComponent.line2.arg2);
-        testComponent.line3.result 
-           = bitwise(testComponent.opName, testComponent.line3.arg1, testComponent.line3.arg2);         
+        testComponent.line1.result
+          = bitwise(testComponent.opName, testComponent.line1.arg1, testComponent.line1.arg2);
+        testComponent.line2.result
+          = bitwise(testComponent.opName, testComponent.line2.arg1, testComponent.line2.arg2);
+        testComponent.line3.result
+          = bitwise(testComponent.opName, testComponent.line3.arg1, testComponent.line3.arg2);
         //console.log(testComponent);           
-      
+
         //Convert numbers to hex with num.toString(16)
         //convertToHex(testComponent);
-        
+
         //Write to the DB
-        
+
         TestComponent.create(testComponent, (err) => {
           if (err) { throw (err) }
           //console.log(`Created ${testcases.length} testcases`)<
         });
-        
+
       }
     });
 
@@ -126,17 +243,17 @@ function componentGenerator(){
 //Functions
 
 function validate(catname, opResults) {
-  let uniqueRes = opResults.map((e,i,a) => {
+  let uniqueRes = opResults.map((e, i, a) => {
     return (a.indexOf(e) === a.lastIndexOf(e)) ? e : -1;
   });
-  let valid = uniqueRes.map((e,i,a) => {
-    return (["NAND","NOR"].includes(operations[i].name) && ["D","E"].includes(catname)) ? -1 : e;
+  let valid = uniqueRes.map((e, i, a) => {
+    return (["NAND", "NOR"].includes(operations[i].name) && ["D", "E"].includes(catname)) ? -1 : e;
   });
   return valid;
 }
 
 function removeDuplicates(arr) {
-  return arr.map((e,i,a) => {
+  return arr.map((e, i, a) => {
     return (a.indexOf(e) === a.lastIndexOf(e)) ? e : -1;
   });
 }
@@ -163,7 +280,7 @@ function genArgsUnrestricted() {
 }
 
 function genArgsRestricted() {
-  const allowed = [8,4,2,1];
+  const allowed = [8, 4, 2, 1];
   const i = Math.floor((Math.random() * 4));
   const arg = allowed[i];
   testComponent.line1.arg1 = arg * Math.floor((Math.random() * 2));
@@ -192,128 +309,16 @@ function convertToHex(comp) {
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CaseGenerator >>>>>>>>>>>>>>>>>>>>>>>>>>>>><
 
-const testCase = {   
-  catOps: [],    
-  complexity: "",
-  line1: {arg1: "", arg2: "", result: ""}, //hexadecimal strings of length 6
-  line2: {arg1: "", arg2: "", result: ""},
-  line3: {arg1: "", arg2: "", result: ""}
-};
 
 
-const numericTestCase = {   
-  line1: {arg1: 0, arg2: 0, result: 0}, 
-  line2: {arg1: 0, arg2: 0, result: 0},
-  line3: {arg1: 0, arg2: 0, result: 0}
-};
-
-let selectedCats = [];
-let numOfComponents;
-
-function caseGenerator(){
-console.log("*********************************************************************");
-
-//select categories
-
-while (selectedCats.length < numOfComponents) {
-  let n = Math.floor(Math.random() * categories.length);
-  let cat = categories[n].name;
-  //validation
-  if (selectedCats.includes(cat) 
-      || (cat === "D" && selectedCats.includes("E")) 
-      || (cat === "E" && selectedCats.includes("D")) ) continue;
-  selectedCats.push(cat);
-}
-
-console.log("Categories selected for this case: " + selectedCats);
-//Retrieve all components
-
-TestComponent.find()
-.then(docs => {
-    //mongoose.connection.close();
-    console.log("RETURNED FROM FIND");
-      createTestCases(docs);
-});   
-}
 
 // end of the CaseGenerator function
 
-function createTestCases(comps) {
-  let numOfComponentsFromDB = comps.length;
-  let selectedComps = [];
-  
-  //console.log("Number of components: " + numOfComponentsFromDB);  
-
-  for (let i = 0; i < selectedCats.length; i++) {
-    let cat = selectedCats[i];
-    let compsWithCategory = [];
-    comps.reduce((acc, e) => {
-      if (e.catName === cat) compsWithCategory.push(e);
-    }, 0);
-    //console.log("Components with category: " + cat)
-    //console.log ("Components with category " + cat + ": " + compsWithCategory.length);
-    
-    let n = Math.floor(Math.random() * compsWithCategory.length);
-    selectedComps.push(compsWithCategory[n]);
-        
-  }
-
-  console.log("Selected Components: ")
-  for (let c of selectedComps) console.log ("Category: " + c.catName + " ID: " + c._id );
-
-  //combine cases in one numericTestCase object
-
-  numericTestCase.line1.arg1 = 0; 
-  numericTestCase.line1.arg2 = 0; 
-  numericTestCase.line1.result = 0; 
-
-  numericTestCase.line2.arg1 = 0; 
-  numericTestCase.line2.arg2 = 0; 
-  numericTestCase.line2.result = 0; 
-
-  numericTestCase.line3.arg1 = 0; 
-  numericTestCase.line3.arg2 = 0; 
-  numericTestCase.line3.result = 0; 
-
-  console.log(JSON.stringify(selectedComps));
-
-  for (let c of selectedComps) 
-     addComponentToCase(c, numericTestCase);
-
-  //populate the final testCase object
-  for (let c of selectedComps) testCase.catOps.push({catName: c.catName, opName: c.opName});
-  testCase.complexity = (numOfComponents <= 2) ? "Low" : (numOfComponents <= 4) ? "Medium" : "High"; 
-
-  //convert values to strings with .toString(16);
-  testCase.line1.arg1 = numericTestCase.line1.arg1.toString(16);
-  testCase.line1.arg2 = numericTestCase.line1.arg2.toString(16);
-  testCase.line1.result = numericTestCase.line1.result.toString(16);
-
-  testCase.line2.arg1 = numericTestCase.line2.arg1.toString(16); 
-  testCase.line2.arg2 = numericTestCase.line2.arg2.toString(16); 
-  testCase.line2.result = numericTestCase.line2.result.toString(16); 
-
-  testCase.line3.arg1 = numericTestCase.line3.arg1.toString(16);
-  testCase.line3.arg2 = numericTestCase.line3.arg2.toString(16);
-  testCase.line3.result = numericTestCase.line3.result.toString(16);
-
-  console.log("For the database: ");
-  console.log(JSON.stringify(testCase));
-
-  //Write to the DB
-
-  TestCase.create(testCase)
-  .then(() => {
-    mongoose.connection.close();
-  }); 
-
-
-}
 
 function addComponentToCase(tcomp, tcase) {
 
   const catNames = ["A", "B", "C", "D", "E", "F"];
-  const catWeights = [16**5, 16**4, 16**3, 16**2, 16, 1];
+  const catWeights = [16 ** 5, 16 ** 4, 16 ** 3, 16 ** 2, 16, 1];
   const idx = catNames.indexOf(tcomp.catName);
   let weight = catWeights[idx];
 
@@ -327,7 +332,7 @@ function addComponentToCase(tcomp, tcase) {
   tcase.line2.arg1 = tcase.line2.arg1 + tcomp.line2.arg1 * weight;
   tcase.line2.arg2 = tcase.line2.arg2 + tcomp.line2.arg2 * weight;
   tcase.line2.result = tcase.line2.result + tcomp.line2.result * weight;
-  
+
   tcase.line3.arg1 = tcase.line3.arg1 + tcomp.line3.arg1 * weight;
   tcase.line3.arg2 = tcase.line3.arg2 + tcomp.line3.arg2 * weight;
   tcase.line3.result = tcase.line3.result + tcomp.line3.result * weight;
@@ -335,3 +340,5 @@ function addComponentToCase(tcomp, tcase) {
 
 }
 
+
+module.exports = router;
