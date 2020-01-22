@@ -34,7 +34,7 @@ section {
 }
 
 .resListHeader{
-  
+  margin-top: 50px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -42,12 +42,19 @@ section {
 }
 
 .trButton {
-  
-  height: 80px;
+  border-radius: 4px;
+  height: 50px;
   width: 160px;
   background-color: #2081c3;
   color: white;
+  font-size: 15px;
 }
+
+.trButton:hover {
+  background-color: green;
+  color: white;
+}
+
 
 .resListHeadLine {
   text-align: center;
@@ -58,7 +65,8 @@ section {
 
 .tableAlign{
   margin-left: 50px;
-  border: solid 25px  #2081c3;
+  margin-top: 30px;
+  border: solid 15px  #2081c3;
   border-style: ridge;
 }
 
@@ -79,11 +87,13 @@ section {
 }
 
 .rbutton {
-  height: 80px;
+  border-radius: 4px;
+  height: 50px;
   width: 160px;
   background-color: #2081c3;
   color: white;
   margin: 15px;
+  font-size: 15px;
 }
 
 .rbutton:hover {
