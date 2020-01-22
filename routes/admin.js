@@ -4,6 +4,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const TestCase = require('../models/testCases');
 const TestComponent = require('../models/testComponents');
+const Test = require('../models/tests');
 
 /*
 const dbName = 'diagram-logic';
@@ -14,29 +15,34 @@ mongoose.connect(`mongodb://localhost/${dbName}`, {
 
 */
 
-let selectedCats = [];
-let numOfComponents;
-
-const testCase = {
-  catOps: [],
-  complexity: "",
-  line1: { arg1: "", arg2: "", result: "" }, //hexadecimal strings of length 6
-  line2: { arg1: "", arg2: "", result: "" },
-  line3: { arg1: "", arg2: "", result: "" }
-};
+//let selectedCats = [];
+//let numOfComponents;
 
 
-const numericTestCase = {
-  line1: { arg1: 0, arg2: 0, result: 0 },
-  line2: { arg1: 0, arg2: 0, result: 0 },
-  line3: { arg1: 0, arg2: 0, result: 0 }
-};
 
-function createTestCases(comps) {
+function createTestCases(comps, selectedCats, numOfComponents) {
+
+  const testCase = {
+    catOps: [],
+    complexity: "",
+    line1: { arg1: "", arg2: "", result: "" }, //hexadecimal strings of length 6
+    line2: { arg1: "", arg2: "", result: "" },
+    line3: { arg1: "", arg2: "", result: "" }
+  };
+  
+  
+  const numericTestCase = {
+    line1: { arg1: 0, arg2: 0, result: 0 },
+    line2: { arg1: 0, arg2: 0, result: 0 },
+    line3: { arg1: 0, arg2: 0, result: 0 }
+  };
+
   let numOfComponentsFromDB = comps.length;
   let selectedComps = [];
 
   console.log("Number of components: " + numOfComponentsFromDB);
+
+  console.log("+++++++++++++++++++++++ selecteCats: " + selectedCats);
 
   for (let i = 0; i < selectedCats.length; i++) {
     let cat = selectedCats[i];
@@ -52,7 +58,7 @@ function createTestCases(comps) {
 
   }
 
-  console.log("Selected Components: ", selectedComps);
+  //console.log("Selected Components: ", selectedComps);
   for (let c of selectedComps) console.log("Category: " + c.catName + " ID: " + c._id);
 
   //combine cases in one numericTestCase object
@@ -106,10 +112,11 @@ function createTestCases(comps) {
 }
 
 
-function caseGenerator() {
+function caseGenerator(numOfComponents) {
   console.log("*********************************************************************");
-  console.log('before start : selected cats : ' + selectedCats + 'number of components : ' + numOfComponents);
-  //select categories
+   //select categories
+  
+  const selectedCats = [];
 
   while (selectedCats.length < numOfComponents) {
     let n = Math.floor(Math.random() * categories.length);
@@ -128,8 +135,8 @@ function caseGenerator() {
   TestComponent.find()
     .then(docs => {
       //mongoose.connection.close();
-      console.log("RETURNED FROM FIND : ", docs);
-      createTestCases(docs);
+     // console.log("RETURNED FROM FIND : ", docs);
+      createTestCases(docs, selectedCats, numOfComponents);   //Promise inside!
     });
 }
 
@@ -145,14 +152,17 @@ router.get('/components', (req, res) => {
 })
 
 router.get('/cases/:noOfComp', (req, res) => {
-  numOfComponents = req.params.noOfComp;
+  console.log("###### Request received " + req.params.noOfComp + "*****************");
+  let numOfComponents = req.params.noOfComp;
   console.log('request for testcase received. Number of components ' + req.params.noOfComp);
-  caseGenerator();
+  caseGenerator(numOfComponents);
   res.json('One case generated');
 })
 
-router.get('/tests', (req, res) => {
-  res.send('test cases generated');
+router.get('/tests/:numbOfCases/:complexity', (req, res) => {
+  console.log("****************** Request received "+ req.params.numbOfCases +' '+ req.params.complexity + " *******");
+  testGenerator(req.params.numbOfCases,req.params.complexity);
+  res.json('One test generated');
 })
 
 
@@ -193,12 +203,12 @@ function componentGenerator() {
 
 
   let countComponents = 0;
-  for (cat of categories) {
+  for (let cat of categories) {
     testComponent.catName = cat.name;
     ["A", "B", "C", "F"].includes(cat.name) ? genArgsUnrestricted() : genArgsRestricted();
     //pre-calculate results of each operation (line 3 only)
     let res = [];
-    for (op of operations)
+    for (let op of operations)
       res.push(bitwise(op.name, testComponent.line3.arg1, testComponent.line3.arg2));
     //console.log("Results: " + res);
     //validate (invalid cases will be replaced with -1)
@@ -238,8 +248,6 @@ function componentGenerator() {
 } // end of componentGenerator function
 
 
-
-// }
 //Functions
 
 function validate(catname, opResults) {
@@ -252,11 +260,6 @@ function validate(catname, opResults) {
   return valid;
 }
 
-function removeDuplicates(arr) {
-  return arr.map((e, i, a) => {
-    return (a.indexOf(e) === a.lastIndexOf(e)) ? e : -1;
-  });
-}
 
 function bitwise(op, arg1, arg2) {
   switch (op) {
@@ -292,7 +295,7 @@ function genArgsRestricted() {
 }
 
 
-
+/*
 //remove
 function convertToHex(comp) {
   comp.line1.arg1 = comp.line1.arg1.toString(16);
@@ -306,7 +309,7 @@ function convertToHex(comp) {
   comp.line3.result = comp.line3.result.toString(16);
 
 }
-
+*/
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CaseGenerator >>>>>>>>>>>>>>>>>>>>>>>>>>>>><
 
 
@@ -337,7 +340,61 @@ function addComponentToCase(tcomp, tcase) {
   tcase.line3.arg2 = tcase.line3.arg2 + tcomp.line3.arg2 * weight;
   tcase.line3.result = tcase.line3.result + tcomp.line3.result * weight;
 
+}
 
+
+//>>>>>>>>>>>>>>>>>>>> Test Generator >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+function testGenerator (numOfCases, maxCaseComplexity) {
+
+  let maxTestName = 0;
+
+  Test 
+  .findOne({})
+  .sort('-testName')   //getting max
+  .exec(function (err, testMax) {
+    maxTestName = (testMax === null) ? 0 : testMax.testName;
+    
+    //Get all test cases from DB
+    TestCase.find()
+    .then (docs => {
+
+      //Generate one test 
+      createTest(docs, numOfCases, maxCaseComplexity, maxTestName); //Promise inside!
+
+    });
+  });   
+}
+
+function createTest(cases, numOfCases, maxCaseComplexity, maxTestName) {
+
+  console.log(">>>>>>>>>>>>>Number of cases in DB: " + cases.length);  
+
+  let test = {   
+    testName: maxTestName + 1,    
+    complexity: (parseInt(maxCaseComplexity) === 1) ? "Low" :((parseInt(maxCaseComplexity) === 2)
+           ? "Medium" : "High"),
+    cases: []
+  };
+
+  while (test.cases.length < numOfCases) {
+    const n = Math.floor(Math.random() * cases.length);
+    let caseId = cases[n]._id;
+    let cx = cases[n].complexity;
+    //validation
+    if (test.cases.includes(caseId) 
+        || (maxCaseComplexity === 1 && cx !== "Low")
+        || (maxCaseComplexity === 2 && cx === "High")) 
+        continue;
+    test.cases.push(caseId);
+  }
+ 
+    //Write it to the DB
+    Test.create(test)     //Promise inside!
+    .then(() => {
+      console.log(">>>>>>>>>>>> Test created: " + JSON.stringify(test));
+      //mongoose.connection.close();
+    });  
 }
 
 

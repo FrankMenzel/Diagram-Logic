@@ -22,8 +22,12 @@ function generateCases() {
 }
 
 function generateTests() {
-  console.log("generate Tests was clicked");
-  axios.get("/tests")
+  
+  x = document.getElementById("numbTc").value;
+  y = document.getElementById("caseComplexity").value;
+  console.log("generate Tests was clicked" +x +" "+y);
+  axios.get("/tests/" + x +"/" + y)
+
     .then(fromServer => {
       document.getElementById("testsAnswer").innerHTML = fromServer.data;
     }).catch(err => {
