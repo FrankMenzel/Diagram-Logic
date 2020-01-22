@@ -1,8 +1,21 @@
 #!/usr/bin/env node
 
+/*
+const componentGenerator = require('./testComponentGenerator.js');
+const caseGenerator = require('./testCaseGenerator.js');
+const testGenerator = require('./testGenerator.js');
+*/
+
 const http = require('http');
 
 let app = require('../app');
+
+//console.log('require objects', componentGenerator, caseGenerator, testGenerator)
+/*
+app.get('/seedComponents', (req, res, next) => componentGenerator() );
+app.get('/seedCases', caseGenerator);
+app.get('/seedTests', testGenerator);
+*/
 
 // catch 404 and render a not-found.hbs template
 app.use((req, res, next) => {
