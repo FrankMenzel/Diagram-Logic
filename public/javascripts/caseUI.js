@@ -9,7 +9,7 @@ let testCase = [];
 let answer = {};
 let caseStartTime = 0;
 let testTime = 0;
-let timeLimit = 60 * 1000;  //per case
+let timeLimit = 120 * 1000;  //per case
 let animTime = 2 * 1000; //between cases
 let caseTimer = 0;
 let loadTimer = 0;
@@ -78,9 +78,9 @@ function loadNextCase() {
   currentCase = currentCase + 1;
 
   if (currentCase >= numOfCases) {  //It was the last test case
-    finishTest();
+    //finishTest(); 
   }
-  else {  
+  else {   
     currentCaseId = document.getElementById("case" + currentCase).innerHTML;
     document.getElementById("current-case").innerHTML = "Case: " + (currentCase + 1) + " / " + numOfCases;
     getTestCase(currentCaseId);  //Promise inside!
@@ -174,6 +174,10 @@ function scoreTestCase(caseId, current, userAnswer) {
     //console.log("Received the evaluation: " + JSON.stringify(fromServer.data) + " Type " + typeof(fromServer.data));
     document.getElementById("result" + current).innerHTML = "  Result: " + fromServer.data;
     if (fromServer.data) currentScore = currentScore + 1;
+    
+    //If it was the last case
+    if (currentCase >= numOfCases) finishTest(); //Promise inside!
+
     return fromServer.data;
   }).catch(err => {
       console.log("err => ", err);

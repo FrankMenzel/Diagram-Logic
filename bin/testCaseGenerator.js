@@ -1,6 +1,6 @@
 //INPUTS
 const numOfCases = 1;  //number of cases to generate
-const numOfComponents = 2;   //number of test components per case
+const numOfComponents = 1;   //number of test components per case
 
 
 const mongoose = require('mongoose');
